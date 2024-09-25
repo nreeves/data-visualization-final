@@ -17,18 +17,17 @@ def load_data():
             if pd.isna(column) or column.str.lower() == 'cylinders':
                 return pd.Series([], dtype=dtype)  
             else:
-                raise  
+                raise 
 
     cars_data['price_cleaned'] = clean_column(cars_data['price'])
     cars_data['engine_capacity_cleaned'] = clean_column(cars_data['engine_capacity'], dtype=int)
     cars_data['horse_power_cleaned'] = clean_column(cars_data['horse_power'], dtype=int)
-    cars_data['is_electric'] = cars_data['fuel_type'].str.lower() == 'electric'  # Assuming 'electric' indicates electric car
-
+  
     return cars_data
 
-@app.route(r'car_visualizer\templates\index.html')
+@app.route('/')
 def index():
-    return render_template('../templates/index.html')
+    return render_template('index.html')
 
 @app.route('/visualize-price')
 def visualize_price():

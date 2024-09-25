@@ -1,5 +1,6 @@
 from car_visualizer.app import db
 
+# Define the Car model
 class Car(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     price = db.Column(db.Float, nullable=True)
