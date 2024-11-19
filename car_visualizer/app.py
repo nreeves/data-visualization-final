@@ -1,16 +1,17 @@
-from flask import Flask, render_template
-import pandas as pd
 import os
+import pandas as pd
+from flask import Flask, render_template
 import plotly.express as px
 import plotly.io as pio
 
-app = Flask(__name__, template_folder='../car_visualizer/templates')
+app = Flask(__name__, template_folder='templates')
 
 def load_data():
-    cars_data = pd.read_csv('car_visualizer\cars.csv')
-
+    base_dir = os.path.abspath(os.path.dirname(__file__))
+    file_path = os.path.join(base_dir, 'cars.csv')
+    cars_data = pd.read_csv(file_path)
+    
     def clean_column(column, dtype=float, errors='coerce'):
-
         try:
             return pd.to_numeric(column.str.replace('SAR', '').str.replace(',', '').str.strip(), errors=errors)
         except ValueError:
@@ -58,8 +59,8 @@ def visualize_hp_vs_engine():
 @app.route('/visualize-electric-cars')
 def visualize_electric_cars():
     cars_data = load_data()
-    electric_cars = cars_data[cars_data['is_electric'] == True]  
-    non_electric_cars = cars_data[cars_data['is_electric'] == False]  
+    electric_cars = cars_data[cars_data['is_electric'] == True]
+    non_electric_cars = cars_data[cars_data['is_electric'] == False]
 
     fig = px.scatter(x=electric_cars['horse_power_cleaned'], y=electric_cars['price_cleaned'],
                      labels={'x': 'Horsepower', 'y': 'Price'},
